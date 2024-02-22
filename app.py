@@ -2,15 +2,22 @@ from dash import Dash, dcc, html, Input, Output, State
 import pandas as pd
 import plotly.express as px
 import dash_bootstrap_components as dbc
+from dash_bootstrap_templates import load_figure_template
 
 df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/Dash-Course/US-Exports/2011_us_ag_exports.csv')
+
+templates = [
+    "solar"
+]
+
+load_figure_template(templates)
 
 badges = html.Div([
                     html.Hr(),
                     html.H6("Author: Jean Pierre Santamaria")
                     ])
 
-app = Dash(__name__,external_stylesheets=[dbc.themes.FLATLY])
+app = Dash(__name__,external_stylesheets=[dbc.themes.SOLAR])
 server = app.server
 
 app.layout = html.Div([
@@ -29,7 +36,7 @@ app.layout = html.Div([
 def update_graph(n, states_selected):
     if n > 0:
        df_states = df[df.state.isin(states_selected)]
-       fig1 = px.bar(data_frame=df_states, x='state', y=['beef','pork','fruits fresh'])
+       fig1 = px.bar(data_frame=df_states, x='state', y=['beef','pork','fruits fresh'],template=templates[0])
        return fig1
     else:
         return px.bar()
